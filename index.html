@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>张骏 · 全栈开发者</title>
+  <meta name="description" content="张骏的个人网站 — 全栈开发者，专注于构建简洁、优雅的 Web 产品。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <style>
+    /* ————— 设计令牌（取自 refero.design 设计系统）————— */
+    :root {
+      --background: #ffffff;
+      --foreground: #0d0f15;
+      --card: #ffffff;
+      --card-foreground: #0d0f15;
+      --primary: #0d0f15;
+      --primary-foreground: #fcfcfc;
+      --secondary: #f7f8fb;
+      --secondary-foreground: #0d0f15;
+      --muted: #edeef3;
+      --muted-foreground: #6f7179;
+      --accent: #f7f8fb;
+      --border: #dfe1e7;
+      --input: #dfe1e7;
+      --ring: #6f7179;
+
+      --radius-lg: 8px;
+      --radius-2xl: 16px;
+      --radius-4xl: 32px;
+
+      --font-display: "Fraunces", "Songti SC", "STSong", serif;
+      --font-sans: "Inter", -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      --font-mono: "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--background);
+      color: var(--foreground);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      min-height: 100vh;
+    }
+
+    ::selection {
+      background: var(--foreground);
+      color: var(--background);
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ————— 导航栏 ————— */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      border-bottom: 1px solid color-mix(in srgb, var(--border) 50%, transparent);
+      background: color-mix(in srgb, var(--background) 90%, transparent);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      height: 72px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .logo {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo .mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      background: var(--foreground);
+      color: var(--background);
+      display: grid;
+      place-items: center;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--muted-foreground);
+      transition: color 0.15s ease;
+    }
+
+    nav a:hover { color: var(--foreground); }
+
+    .nav-cta {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--primary-foreground);
+      background: var(--primary);
+      padding: 9px 18px;
+      border-radius: 999px;
+      transition: opacity 0.2s ease;
+    }
+
+    .nav-cta:hover { opacity: 0.8; color: var(--primary-foreground); }
+
+    /* ————— 布局 ————— */
+    .container {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* ————— Hero ————— */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 96px 24px 88px;
+    }
+
+    .eyebrow-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      height: 30px;
+      padding: 0 14px;
+      border: 1px solid color-mix(in srgb, var(--border) 60%, transparent);
+      border-radius: 999px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--muted-foreground);
+    }
+
+    .eyebrow-badge .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #10b981;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.35; }
+    }
+
+    .hero h1 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 48px;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-top: 28px;
+      text-wrap: balance;
+      max-width: 760px;
+    }
+
+    .hero h1 em {
+      font-style: italic;
+      font-weight: 400;
+    }
+
+    .hero .lede {
+      margin-top: 24px;
+      max-width: 560px;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--muted-foreground);
+      text-wrap: pretty;
+    }
+
+    .hero-actions {
+      margin-top: 36px;
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      height: 46px;
+      padding: 0 24px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: var(--primary-foreground);
+    }
+    .btn-primary:hover { opacity: 0.82; }
+
+    .btn-ghost {
+      border: 1px solid var(--border);
+      color: var(--foreground);
+      background: var(--background);
+    }
+    .btn-ghost:hover { border-color: var(--muted-foreground); }
+
+    .hero-meta {
+      margin-top: 48px;
+      display: flex;
+      gap: 40px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .hero-meta .item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .hero-meta .num {
+      font-family: var(--font-display);
+      font-size: 26px;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-meta .label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted-foreground);
+    }
+
+    /* ————— 通用区块 ————— */
+    section { padding: 88px 0; }
+
+    .section-head {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+
+    .section-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted-foreground);
+    }
+
+    .section-head h2 {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 36px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    .section-head p {
+      color: var(--muted-foreground);
+      font-size: 16px;
+      max-width: 560px;
+    }
+
+    .divider {
+      border-top: 1px solid var(--border);
+    }
+
+    /* ————— 关于 ————— */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .about-bio {
+      font-size: 17px;
+      line-height: 1.75;
+      color: var(--foreground);
+      text-wrap: pretty;
+    }
+
+    .about-bio p + p { margin-top: 16px; }
+    .about-bio .muted { color: var(--muted-foreground); }
+
+    .spec-sheet {
+      background: var(--secondary);
+      border-radius: var(--radius-4xl);
+      padding: 12px 32px;
+    }
+
+    .spec-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .spec-row:last-child { border-bottom: none; }
+
+    .spec-row .key {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted-foreground);
+      white-space: nowrap;
+    }
+
+    .spec-row .value {
+      font-size: 15px;
+      font-weight: 500;
+      text-align: right;
+    }
+
+    /* ————— 项目 ————— */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .project-cover {
+      position: relative;
+      aspect-ratio: 16 / 10;
+      width: 100%;
+      overflow: hidden;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+      transition: transform 0.3s ease;
+    }
+
+    .project-card:hover .project-cover { transform: scale(1.02); }
+
+    .project-cover .art {
+      position: absolute;
+      inset: 0;
+    }
+
+    .project-cover .art::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+    }
+
+    .cover-1 { background: radial-gradient(120% 120% at 20% 15%, #fdfbf7 0%, #f3ecdf 45%, #e4d3b4 100%); }
+    .cover-2 { background: radial-gradient(120% 120% at 20% 15%, #f7fafc 0%, #e6edf4 45%, #c9d8e6 100%); }
+    .cover-3 { background: radial-gradient(120% 120% at 20% 15%, #3a3f49 0%, #22252c 50%, #0d0f15 100%); }
+
+    .project-cover .index {
+      position: absolute;
+      left: 16px;
+      bottom: 14px;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: rgba(13, 15, 21, 0.55);
+      z-index: 2;
+    }
+    .cover-3 .index { color: rgba(255, 255, 255, 0.6); }
+
+    .project-info {
+      padding: 20px 4px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .project-info h3 {
+      font-family: var(--font-display);
+      font-weight: 500;
+      font-size: 21px;
+      letter-spacing: -0.01em;
+    }
+
+    .project-info p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted-foreground);
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+    }
+
+    .project-tags span {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.02em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--muted-foreground);
+    }
+
+    /* ————— 联系 ————— */
+    .contact-list {
+      border-top: 1px solid var(--border);
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 24px 4px;
+      border-bottom: 1px solid var(--border);
+      transition: padding 0.2s ease;
+    }
+
+    .contact-row:hover { padding-left: 16px; }
+
+    .contact-row .left {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      min-width: 0;
+    }
+
+    .contact-row .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: var(--secondary);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .contact-row .name {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .contact-row .handle {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+    }
+
+    .contact-row .arrow {
+      font-family: var(--font-mono);
+      color: var(--muted-foreground);
+      font-size: 14px;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .contact-row:hover .arrow {
+      transform: translate(3px, -3px);
+      color: var(--foreground);
+    }
+
+    /* ————— 页脚 ————— */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-inner p {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+      letter-spacing: 0.02em;
+    }
+
+    .footer-inner .links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .footer-inner .links a {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--muted-foreground);
+      transition: color 0.15s ease;
+    }
+    .footer-inner .links a:hover { color: var(--foreground); }
+
+    /* ————— 响应式 ————— */
+    @media (max-width: 860px) {
+      .hero { padding: 72px 24px 64px; }
+      .hero h1 { font-size: 38px; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+      .projects-grid { grid-template-columns: 1fr; }
+      nav a:not(.nav-cta) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-inner">
+      <a href="#" class="logo"><span class="mark">Z</span>zhangsan.dev</a>
+      <nav>
+        <a href="#about">关于</a>
+        <a href="#projects">项目</a>
+        <a href="#contact">联系</a>
+        <a href="#contact" class="nav-cta">联系我</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <span class="eyebrow-badge"><span class="dot"></span>北京 · 全栈开发者</span>
+      <h1>你好，我是张骏。<br>我构建<em>简洁、优雅</em>的 Web 产品。</h1>
+      <p class="lede">
+        专注前后端全栈开发，追求清晰的设计与可靠的工程实践。
+        这里记录我的项目、思考与成长。
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">查看项目 →</a>
+        <a href="#contact" class="btn btn-ghost">联系我</a>
+      </div>
+      <div class="hero-meta">
+        <div class="item"><span class="num">5+</span><span class="label">年经验</span></div>
+        <div class="item"><span class="num">30+</span><span class="label">交付项目</span></div>
+        <div class="item"><span class="num">10+</span><span class="label">开源贡献</span></div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 关于 -->
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">01 · 关于我</span>
+          <h2>以工程思维，<br>做有温度的产品。</h2>
+        </div>
+        <div class="about-grid">
+          <div class="about-bio">
+            <p>
+              我是一名全栈软件工程师，现居北京。过去五年，我一直在创业团队与一线产品中打磨
+              从 0 到 1 的产品构建能力——从需求梳理、架构设计，到开发、上线与持续迭代。
+            </p>
+            <p class="muted">
+              工作之余，我热衷于开源、摄影与阅读。我相信好的产品来自对细节的执着，
+              也来自对用户真实处境的共情。
+            </p>
+          </div>
+          <div class="spec-sheet">
+            <div class="spec-row"><span class="key">职业</span><span class="value">软件工程师</span></div>
+            <div class="spec-row"><span class="key">所在地</span><span class="value">中国 · 北京</span></div>
+            <div class="spec-row"><span class="key">经验</span><span class="value">5 年 Web 开发</span></div>
+            <div class="spec-row"><span class="key">专注</span><span class="value">全栈 / 架构设计</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 项目 -->
+    <section id="projects">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">02 · 项目精选</span>
+          <h2>一些我参与构建的东西。</h2>
+          <p>以下是部分具有代表性的项目，涵盖 Web 应用、工具与数据产品。</p>
+        </div>
+        <div class="projects-grid">
+          <a href="#" class="project-card">
+            <div class="project-cover">
+              <div class="art cover-1"></div>
+              <span class="index">01</span>
+            </div>
+            <div class="project-info">
+              <h3>在线协作平台</h3>
+              <p>支持多人实时协作的文档编辑平台，具备版本管理与细粒度权限控制。</p>
+              <div class="project-tags"><span>Vue</span><span>WebSocket</span></div>
+            </div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-cover">
+              <div class="art cover-2"></div>
+              <span class="index">02</span>
+            </div>
+            <div class="project-info">
+              <h3>开发者效率 CLI</h3>
+              <p>一款提升日常开发效率的命令行工具，支持任务自动化与批量处理。</p>
+              <div class="project-tags"><span>Node.js</span><span>CLI</span></div>
+            </div>
+          </a>
+          <a href="#" class="project-card">
+            <div class="project-cover">
+              <div class="art cover-3"></div>
+              <span class="index">03</span>
+            </div>
+            <div class="project-info">
+              <h3>数据可视化看板</h3>
+              <p>将复杂数据转化为直观图表，帮助团队快速洞察业务趋势与异常。</p>
+              <div class="project-tags"><span>React</span><span>D3</span></div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- 联系 -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <span class="section-eyebrow">03 · 联系</span>
+          <h2>一起做点有意思的事。</h2>
+          <p>无论是合作、交流，还是仅仅打个招呼，都欢迎通过以下方式找到我。</p>
+        </div>
+        <div class="contact-list">
+          <a class="contact-row" href="mailto:zhangsan@example.com">
+            <div class="left">
+              <span class="icon">✉️</span>
+              <div>
+                <div class="name">邮箱</div>
+                <div class="handle">zhangsan@example.com</div>
+              </div>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+          <a class="contact-row" href="https://github.com/yourname" target="_blank" rel="noopener">
+            <div class="left">
+              <span class="icon">🐙</span>
+              <div>
+                <div class="name">GitHub</div>
+                <div class="handle">@yourname</div>
+              </div>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+          <a class="contact-row" href="https://weibo.com/yourname" target="_blank" rel="noopener">
+            <div class="left">
+              <span class="icon">💬</span>
+              <div>
+                <div class="name">微博</div>
+                <div class="handle">@yourname</div>
+              </div>
+            </div>
+            <span class="arrow">↗</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <p>© 2025 张骏 · 保留所有权利</p>
+      <div class="links">
+        <a href="#about">关于</a>
+        <a href="#projects">项目</a>
+        <a href="#contact">联系</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
